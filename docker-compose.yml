@@ -1,0 +1,12 @@
+version: '3.9'
+services:
+  postgres: 
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_DB=pokedoro
+      - POSTGRES_USER=ustav
+      - POSTGRES_PASSWORD=batatao
+    ports:
+      - '5432:5432'
+
