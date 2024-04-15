@@ -59,5 +59,5 @@ app.register(addPokemonToUser)
 
 const port = 1333
 app.listen({ port }).then(() => {
-    console.log(`server running on http://localhost:${port}`)
+    console.log(`server running on port: ${port}`)
 })
