@@ -10,8 +10,22 @@ import { addPokemonToUser } from './routes/user/add-pokemon-to-user';
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
 import { userLogin } from './routes/user/user-login';
+import cors from '@fastify/cors'
 
 const app = fastify()
+
+app.register(cors, {
+ origin: (origin, cb) => {
+    const hostname = new URL(origin).hostname
+    if(hostname === "localhost"){
+      //  Request from localhost will pass
+      cb(null, true)
+      return
+    }
+    // Generate an error on other origins, disabling access
+    cb(new Error("Not allowed"), false)
+  }
+})
 
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
