@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch --env-file .env src/server.ts",
-    "build" : "bun i",
+    "build": "tsup src",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "prisma generate && tsx src/server.ts"
+    "start": "node dist/server.js"
   },
   "keywords": [],
   "author": "",
@@ -18,7 +18,7 @@
   "devDependencies": {
     "@types/node": "^20.12.5",
     "tsx": "^4.7.2",
-    "typescript": "^5.4.4"
+    "typescript": "^5.4.5"
   },
   "dependencies": {
     "@fastify/swagger": "^8.14.0",
@@ -32,6 +32,7 @@
     "jsonwebtoken": "^9.0.2",
     "p-map": "^7.0.2",
     "prisma": "^5.12.1",
+    "tsup": "^8.0.2",
     "zod": "^3.22.4"
   }
 }
