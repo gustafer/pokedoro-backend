@@ -58,6 +58,10 @@ app.register(createPokemon)
 app.register(addPokemonToUser)
 
 const port = 1333
-app.listen({ port }).then(() => {
-    console.log(`server running on port: ${port}`)
+app.listen({
+    host: '0.0.0.0',
+    port: process.env.PORT ? Number(process.env.PORT) : port
 })
+    .then(() => {
+        console.log(`server running on port: ${port}`)
+    })
