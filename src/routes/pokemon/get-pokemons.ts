@@ -16,6 +16,11 @@ export async function getPokemons(app: FastifyInstance) {
 
             const results = 20
             const pokemons = await prisma.pokemons.findMany({
+                select: {
+                    name: true,
+                    id: true,
+                    type_list: true
+                },
                 take: results,
                 skip: results * pageIndex
             })

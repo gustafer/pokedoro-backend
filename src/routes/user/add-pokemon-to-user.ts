@@ -4,6 +4,8 @@ import { prisma } from "../../lib/prisma";
 import { z } from "zod";
 import { auth } from "../../middlewares/auth";
 import { checkUserId } from "../../utils/auth/check-user-id";
+import { transformPokemonArray } from "../../utils/transformPokemonArray";
+import { transformPokemonTypelist } from "../../utils/transformPokemonTypelist";
 
 export async function addPokemonToUser(app: FastifyInstance) {
     app
@@ -15,6 +17,7 @@ export async function addPokemonToUser(app: FastifyInstance) {
                     userId: z.string().cuid(),
                     pokemonId: z.number()
                 })
+
             }
         }, async (req, res) => {
             const { userId, pokemonId } = req.body
@@ -25,6 +28,10 @@ export async function addPokemonToUser(app: FastifyInstance) {
                 where: {
                     id: pokemonId
                 },
+                select: {
+                    id: true,
+                    type_list: true
+                }
             })
 
             if (!existingPokemon) return res.status(404).send("pokemon not found")
@@ -76,8 +83,10 @@ export async function addPokemonToUser(app: FastifyInstance) {
                     pokemons: true,
                 }
             })
+            if (!updatedUser) return res.status(404).send({ message: "how did you get this error lol" })
 
 
-            return res.status(201).send({ userId: updatedUser?.id, newPokemon: existingPokemon, pokemons: updatedUser?.pokemons })
+
+            return res.status(201).send({ userId: updatedUser.id, newPokemon: existingPokemon, pokemons: updatedUser.pokemons })
         })
 }
