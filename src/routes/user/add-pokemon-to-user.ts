@@ -30,6 +30,7 @@ export async function addPokemonToUser(app: FastifyInstance) {
                 },
                 select: {
                     id: true,
+                    name: true,
                     type_list: true
                 }
             })
