@@ -4,14 +4,12 @@ import { prisma } from "../../lib/prisma";
 import { z } from "zod";
 import { auth } from "../../middlewares/auth";
 import { checkUserId } from "../../utils/auth/check-user-id";
-import { transformPokemonArray } from "../../utils/transformPokemonArray";
-import { transformPokemonTypelist } from "../../utils/transformPokemonTypelist";
 
 export async function addPokemonToUser(app: FastifyInstance) {
     app
         .withTypeProvider<ZodTypeProvider>()
         .put('/user/pokemon', {
-            preValidation: auth,
+            preValidation: (req, res, done) => auth(req, res, done),
             schema: {
                 body: z.object({
                     userId: z.string().cuid(),

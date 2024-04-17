@@ -2,7 +2,6 @@ import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { prisma } from "../../lib/prisma";
 import { z } from "zod";
-import { transformPokemonArray } from "../../utils/transformPokemonArray";
 import { auth } from "../../middlewares/auth";
 import { checkUserId } from "../../utils/auth/check-user-id";
 
@@ -10,7 +9,7 @@ export async function getUser(app: FastifyInstance) {
     app
         .withTypeProvider<ZodTypeProvider>()
         .get('/user/:id', {
-            preValidation: auth,
+            preValidation: (req, res, done) => auth(req, res, done),
             schema: {
                 params: z.object({
                     id: z.string()
