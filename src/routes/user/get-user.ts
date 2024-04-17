@@ -50,8 +50,7 @@ export async function getUser(app: FastifyInstance) {
 
             checkUserId(req, res, user.id)
 
-            const pokemonsArray = transformPokemonArray(user.pokemons)
 
-            res.send({ user: { name: user.name, email: user.email, id: user.id, pokemons: pokemonsArray, pokemonsCount: user._count.pokemons } })
+            res.send({ user: { name: user.name, email: user.email, id: user.id, pokemons: user.pokemons, pokemonsCount: user._count.pokemons } })
         })
 }
