@@ -41,7 +41,7 @@ export async function userLogin(app: FastifyInstance) {
 
         if (!secret) return res.status(404).send({ meessage: "secret not found" })
 
-        const token = jwt.sign({ id: user.id, role: user.role },
+        const token = jwt.sign({ id: user.id, name: user.name, role: user.role },
             secret
         )
 
