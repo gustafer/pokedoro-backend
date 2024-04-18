@@ -31,7 +31,6 @@ export async function getPokemons(app: FastifyInstance) {
                         mode: 'insensitive'
                     }
                 } : {
-
                 }
             })
 
