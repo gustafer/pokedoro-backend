@@ -15,12 +15,17 @@ export async function getUser(app: FastifyInstance) {
                     id: z.string()
                 }),
                 querystring: z.object({
+                    pageIndex: z.string().default('0').nullable().transform(Number),
                     pokemonQ: z.string().nullish()
                 })
             }
         }, async (req, res) => {
+
             const { id } = req.params
             const { pokemonQ } = req.query
+            const { pageIndex } = req.query
+
+            const results = 20
             const user = await prisma.user.findUnique({
                 select: {
                     email: true,
@@ -42,7 +47,9 @@ export async function getUser(app: FastifyInstance) {
                                 mode: 'insensitive'
                             }
                         } : {
-                        }
+                        },
+                        take: results,
+                        skip: results * pageIndex,
                     },
                     _count: {
                         select: {
@@ -60,7 +67,6 @@ export async function getUser(app: FastifyInstance) {
 
             checkUserId(req, res, user.id)
 
-
-            res.send({ user: { name: user.name, email: user.email, id: user.id, pokemons: user.pokemons, pokemonsCount: user._count.pokemons } })
+            res.send({ user: { name: user.name, email: user.email, id: user.id, pokemons: user.pokemons, pageIndex, pokemonsCount: user._count.pokemons } })
         })
 }
