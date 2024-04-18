@@ -8,11 +8,13 @@ export async function getPokemons(app: FastifyInstance) {
         .get('/pokemon', {
             schema: {
                 querystring: z.object({
-                    pageIndex: z.string().default('0').nullable().transform(Number)
+                    pageIndex: z.string().default('0').nullable().transform(Number),
+                    query: z.string().nullish()
                 })
             }
         }, async (req, res) => {
             const { pageIndex } = req.query
+            const { query } = req.query
 
             const results = 20
             const pokemons = await prisma.pokemons.findMany({
@@ -22,7 +24,15 @@ export async function getPokemons(app: FastifyInstance) {
                     type_list: true
                 },
                 take: results,
-                skip: results * pageIndex
+                skip: results * pageIndex,
+                where: query ? {
+                    name: {
+                        contains: query,
+                        mode: 'insensitive'
+                    }
+                } : {
+
+                }
             })
 
             if (pokemons.length < 1) {
