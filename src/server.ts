@@ -14,19 +14,19 @@ import cors from '@fastify/cors'
 
 const app = fastify()
 
-app.register(cors, {
- origin: (origin, cb) => {
-    if (!origin) return cb(new Error("Not allowed"), false)
-    const hostname = new URL(origin).hostname
-    if(hostname === "localhost"){
-      //  Request from localhost will pass
-      cb(null, true)
-      return
-    }
-    // Generate an error on other origins, disabling access
-    cb(new Error("Not allowed"), false)
-  }
-})
+// app.register(cors, {
+//  origin: (origin, cb) => {
+//     if (!origin) return cb(new Error("Not allowed"), false)
+//     const hostname = new URL(origin).hostname
+//     if(hostname === "localhost"){
+//       //  Request from localhost will pass
+//       cb(null, true)
+//       return
+//     }
+//     // Generate an error on other origins, disabling access
+//     cb(new Error("Not allowed"), false)
+//   }
+// })
 
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
