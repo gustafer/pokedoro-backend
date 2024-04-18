@@ -13,10 +13,14 @@ export async function getUser(app: FastifyInstance) {
             schema: {
                 params: z.object({
                     id: z.string()
+                }),
+                querystring: z.object({
+                    pokemonQ: z.string().nullish()
                 })
             }
         }, async (req, res) => {
             const { id } = req.params
+            const { pokemonQ } = req.query
             const user = await prisma.user.findUnique({
                 select: {
                     email: true,
@@ -31,6 +35,13 @@ export async function getUser(app: FastifyInstance) {
                                     type: true
                                 }
                             }
+                        },
+                        where: pokemonQ ? {
+                            name: {
+                                contains: pokemonQ,
+                                mode: 'insensitive'
+                            }
+                        } : {
                         }
                     },
                     _count: {
