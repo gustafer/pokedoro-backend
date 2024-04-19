@@ -24,7 +24,7 @@ app.register(cors, {
       cb(null, true)
       return
     }
-    if(urlOrigin === "pokedoro.vercel.app"){
+    if(urlOrigin === "https://pokedoro.vercel.app"){
         //  Request from localhost will pass
         cb(null, true)
         return
