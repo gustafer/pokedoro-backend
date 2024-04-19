@@ -26,6 +26,8 @@ export async function getUser(app: FastifyInstance) {
             const { pageIndex } = req.query
 
             const results = 20
+
+          
             const user = await prisma.user.findUnique({
                 select: {
                     email: true,
@@ -61,12 +63,19 @@ export async function getUser(app: FastifyInstance) {
                     id
                 }
             })
+            
+
             if (!user) {
                 throw new Error("user not found!")
             }
 
+            const totalResults = user._count.pokemons
+
+            const totalPages = Math.ceil(totalResults / results)
+
+
             checkUserId(req, res, user.id)
 
-            res.send({ user: { name: user.name, email: user.email, id: user.id, pokemons: user.pokemons, pageIndex, pokemonsCount: user._count.pokemons } })
+            res.send({ user: { name: user.name, email: user.email, id: user.id, pokemons: user.pokemons, pageIndex, pokemonsCount: user._count.pokemons, totalPages } })
         })
 }

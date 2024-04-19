@@ -17,11 +17,17 @@ export async function getPokemons(app: FastifyInstance) {
             const { query } = req.query
 
             const results = 20
+
+            const totalResults = await prisma.pokemons.count()
+
+            const totalPages = Math.ceil(totalResults / results)
+
+
             const pokemons = await prisma.pokemons.findMany({
                 select: {
                     name: true,
                     id: true,
-                    type_list: true
+                    type_list: true,
                 },
                 take: results,
                 skip: results * pageIndex,
@@ -38,7 +44,7 @@ export async function getPokemons(app: FastifyInstance) {
                 res.status(400).send({ message: "Couldnt find any pokemons." })
             }
 
-            return res.send({ pokemons, pageIndex })
+            return res.send({ pokemons, pageIndex, totalPages })
         })
 
 }
