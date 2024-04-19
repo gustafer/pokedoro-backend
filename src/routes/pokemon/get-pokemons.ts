@@ -18,11 +18,6 @@ export async function getPokemons(app: FastifyInstance) {
 
             const results = 20
 
-            const totalResults = await prisma.pokemons.count()
-
-            const totalPages = Math.ceil(totalResults / results)
-
-
             const pokemons = await prisma.pokemons.findMany({
                 select: {
                     name: true,
@@ -39,6 +34,17 @@ export async function getPokemons(app: FastifyInstance) {
                 } : {
                 }
             })
+
+            const totalResults = await prisma.pokemons.count({
+                where: query ? {
+                    name: {
+                        contains: query,
+                        mode: 'insensitive'
+                    }
+                } : {
+                }
+            })
+            const totalPages = Math.ceil(totalResults / results)
 
             if (pokemons.length < 1) {
                 res.status(400).send({ message: "Couldnt find any pokemons." })
