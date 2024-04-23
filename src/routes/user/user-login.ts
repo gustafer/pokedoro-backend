@@ -34,7 +34,7 @@ export async function userLogin(app: FastifyInstance) {
         const checkPassword = await bcrypt.compare(password, user.password)
 
         if (!checkPassword) {
-            return res.status(422).send({ message: "password does not match." })
+            return res.status(400).send({ message: "password does not match." })
         }
 
         const secret = process.env.SECRET
