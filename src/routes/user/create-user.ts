@@ -8,9 +8,9 @@ export async function createUser(app: FastifyInstance) {
     app.withTypeProvider<ZodTypeProvider>().post('/user', {
         schema: {
             body: z.object({
-                name: z.string().min(1),
-                email: z.string().email(),
-                password: z.string().min(5)
+                name: z.string().min(1).max(100),
+                email: z.string().email().max(100),
+                password: z.string().min(5).max(100)
             }),
             response: {
             }
